@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 /*
- * ³Ö¾Ã²ãÊµÏÖÀà
+ * æŒä¹…å±‚å®ç°ç±»
  */
 import org.springframework.stereotype.Repository;
 
@@ -21,7 +21,7 @@ public class opsDAOImpl implements opsDAO{
 	@Qualifier("jt")
 	private JdbcTemplate jt;
 	
-	//Ôö¼ÓÊı¾İ¿â´ÊÌõ
+	//å¢åŠ æ•°æ®åº“è¯æ¡
 	public void saveEntity(entity et) {
 		
 			String sql="INSERT INTO jnby_bj (answer,question,classify,url) VALUES(?,?,?,?)";
@@ -31,7 +31,7 @@ public class opsDAOImpl implements opsDAO{
 		
 		
 	}
-	//ĞŞ¸ÄÊı¾İ¿â´ÊÌõ
+	//ä¿®æ”¹æ•°æ®åº“è¯æ¡
 	public void update(entity et) {
 		String sql="UPDATE jnby_bj SET answer=?,question=?,classify=?,url=? WHERE id=? ";
 		Object[] args={et.getAnswer(),et.getQuestion(),et.getId(),et.getClassify(),et.getUrl()};
@@ -51,14 +51,14 @@ public class opsDAOImpl implements opsDAO{
 		}
 		
 	}
-	//²éÕÒÊı¾İ¿âËùÓĞ´ÊÌõ
+	//æŸ¥æ‰¾æ•°æ®åº“æ‰€æœ‰è¯æ¡
 	public List<entity> find() {
-			String sql="SELECT * FROM jnby_bj";
+			String sql="SELECT * FROM jnby_bj order by classify";
 			List<entity> find =jt.query(sql, new qaRowMapper());
 			return find;
 	}
 	
-	//¸ù¾İÎ¨Ò»±êÊ¶·ûÉ¾³ıÊı¾İ¿â´ÊÌõ
+	//æ ¹æ®å”¯ä¸€æ ‡è¯†ç¬¦åˆ é™¤æ•°æ®åº“è¯æ¡
 	public void delete(int id) {
 		    String sql="DELETE FROM jnby_bj WHERE id=?";
 		    Object[] args = {id};
@@ -66,7 +66,7 @@ public class opsDAOImpl implements opsDAO{
 		
 	}
 
-	//¸ù¾İ¹Ø¼ü´Ê ²éÑ¯Êı¾İ¿â´ÊÌõ
+	//æ ¹æ®å…³é”®è¯ æŸ¥è¯¢æ•°æ®åº“è¯æ¡
 	public List<entity> findByWords(entity et){
 		
 		List<entity> ets=null;
@@ -87,7 +87,7 @@ public class opsDAOImpl implements opsDAO{
 		
 		return ets;
 	}
-	//·ÖÀà²éÕÒ
+	//åˆ†ç±»æŸ¥æ‰¾
 	
 	public List<entity> findByClassify(entity et) {
 		List<entity> ets = null;
