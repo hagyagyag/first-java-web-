@@ -14,12 +14,12 @@
         <nav class="navbar navbar-default row no-yj  navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-list-left" aria-expanded="false">
+                <!--            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-list-left" aria-expanded="false">
         <span class="sr-only">Toggle navigation</span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
-      </button>
+      </button>  -->
                     <a class="navbar-brand" href="main.do">Q&A库管理系统</a>
                 </div>
 
@@ -57,6 +57,8 @@
                                 <li><a href="class.do?classify=打印机">打印机</a></li>
                                 <li><a href="class.do?classify=内淘">内淘</a></li>
                                 <li><a href="class.do?classify=CRM会员问题">CRM会员问题</a></li>
+                                <li><a href="class.do?classify=OA问题">OA问题</a></li>
+                                <li><a href="class.do?classify=HR问题">HR问题</a></li>
                                 <li><a href="class.do?classify=其它">其它</a></li>
                             </ul>
                         </li>
