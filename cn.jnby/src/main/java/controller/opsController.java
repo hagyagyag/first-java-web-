@@ -44,7 +44,7 @@ public class opsController {
 	    @Resource(name = "opsService")
         private opsService os ;
 		
-		//²éÕÒQ&A¿âÖĞËùÓĞÊı¾İ
+		//æŸ¥æ‰¾Q&Aåº“ä¸­æ‰€æœ‰æ•°æ®
 		@RequestMapping("/main.do")
 		public String main(HttpServletRequest request) {
 			List<entity> ets=os.find();
@@ -66,7 +66,7 @@ public class opsController {
 			}catch(Exception e){
 				e.printStackTrace();
 				if (e instanceof ApplicationException) {
-					// ½«Òì³£ĞÅÏ¢°ó¶¨µ½RequestÇëÇóÉÏ
+					// å°†å¼‚å¸¸ä¿¡æ¯ç»‘å®šåˆ°Requestè¯·æ±‚ä¸Š
 					request.setAttribute("erro", e.getMessage());
 					return "erro";
 				}
@@ -87,7 +87,7 @@ public class opsController {
 			}catch(Exception e){
 				e.printStackTrace();
 				if (e instanceof ApplicationException) {
-					// ½«Òì³£ĞÅÏ¢°ó¶¨µ½RequestÇëÇóÉÏ
+					// å°†å¼‚å¸¸ä¿¡æ¯ç»‘å®šåˆ°Requestè¯·æ±‚ä¸Š
 					request.setAttribute("erro", e.getMessage());
 					return "erro";
 				}
@@ -97,7 +97,7 @@ public class opsController {
 		}
 
 		/**
-		 * ÒÀ¾İÎ¨Ò»±êÊ¾·ûÉ¾³ıÊı¾İ¿âÖĞµÄÊı¾İ
+		 * ä¾æ®å”¯ä¸€æ ‡ç¤ºç¬¦åˆ é™¤æ•°æ®åº“ä¸­çš„æ•°æ®
 		 * 
 		 * @param request
 		 * @return
@@ -106,11 +106,11 @@ public class opsController {
 		public String delete(HttpServletRequest request) {
 			int id = Integer.parseInt(request.getParameter("id"));
 			os.delete(id);
-			return "redirect:main.do";
+			return "redirect:toDel.do";
 		}
 
 		/**
-		 * ·ÃÎÊWEB-INFÎÄ¼ş¼ĞÏÂµÄjspÎÄ¼ş
+		 * è®¿é—®WEB-INFæ–‡ä»¶å¤¹ä¸‹çš„jspæ–‡ä»¶
 		 * 
 		 * @return
 		 */
@@ -120,7 +120,7 @@ public class opsController {
 		}
 
 		/**
-		 * ·ÃÎÊWEB-INFÎÄ¼ş¼ĞÏÂµÄjspÎÄ¼ş
+		 * è®¿é—®WEB-INFæ–‡ä»¶å¤¹ä¸‹çš„jspæ–‡ä»¶
 		 * 
 		 * @return
 		 */
@@ -129,109 +129,77 @@ public class opsController {
 			return "update";
 		}
 		
+		/**
+		 * è®¿é—®WEB-INFæ–‡ä»¶å¤¹ä¸‹çš„jspæ–‡ä»¶
+		 * 
+		 * @return
+		 */
+		@RequestMapping("/toDel.do")
+		public String toDel(HttpServletRequest request) {
+			List<entity> ets=os.find();
+			request.setAttribute("find", ets);
+			return "del";
+		}
 		
 		
 		
 		
-		//Ìí¼ÓQ&A¿âÖĞµÄÊı¾İ
+		
+		//æ·»åŠ Q&Aåº“ä¸­çš„æ•°æ®
 		@RequestMapping(value = "/save", method = RequestMethod.POST)
 		public String save(HttpServletRequest request,
 				@RequestParam("file") MultipartFile file)throws Exception{
-			if(!file.isEmpty()) { 
-			//»ñÈ¡Ô­Ê¼ÎÄ¼şµÄÃû³ÆºÍºó×º
-				String originalFilename = file.getOriginalFilename();	
-				
-			//ÉÏ´«ÎÄ¼şÂ·¾¶ 
-				System.out.println(1111111111);
+		       if(!file.isEmpty()){
+			//ä¸Šä¼ æ–‡ä»¶è·¯å¾„ 
 				String path = request.getSession().getServletContext().getRealPath("/images/"); 
+				os.fileUpload(path, file);
 				System.out.println("path:"+path);
-			//ÉÏ´«ÎÄ¼şÃû 
-				System.out.println(2222222);
-				File filepath = new File(path); 
-			//ÅĞ¶ÏÂ·¾¶ÊÇ·ñ´æÔÚ£¬Èç¹û²»´æÔÚ¾Í´´½¨Ò»¸ö 
-				if (!filepath.exists()) { 
-				    filepath.mkdirs(); 
-				} 
-				String filename = file.getOriginalFilename();
-				
-//				  //Ê¹ÓÃUUID¼ÓÇ°×ºÃüÃûÎÄ¼ş£¬·ÀÖ¹Ãû×ÖÖØ¸´±»¸²¸Ç
-//				    String prefix = UUID.randomUUID().toString();
-//				    prefix = prefix.replace("-","");
-//				    String fileName = prefix+"_"+file.getOriginalFilename();//Ê¹ÓÃUUID¼ÓÇ°×ºÃüÃûÎÄ¼ş£¬·ÀÖ¹Ãû×ÖÖØ¸´±»¸²¸Ç
-				//¹¹Ôìurl£¨¸ùÄ¿Â¼ÎÄ¼şÃû+ºó×º£©£¬ÎªÁË·½±ãÔÚÊı¾İ¿âÖĞ´æÈ¡
-				String url = filename;
-				System.out.println(url);
-				
-				  //ÉùÃ÷ÊäÈëÊä³öÁ÷
-				    InputStream inBuff= file.getInputStream();
-                    BufferedInputStream in=new BufferedInputStream(inBuff); 
-				  //Ö¸¶¨Êä³öÁ÷µÄÎ»ÖÃ;
-				    OutputStream outBuff=new FileOutputStream(new File(path+File.separator+filename));
-				    BufferedOutputStream out=new BufferedOutputStream(outBuff); 
-				    
-				    
-				  //ÀàËÆÓÚÎÄ¼ş¸´ÖÆ£¬½«ÎÄ¼ş´æ´¢µ½ÊäÈëÁ÷£¬ÔÙÍ¨¹ıÊä³öÁ÷Ğ´Èëµ½ÉÏ´«Î»ÖÃ
-				    byte []buffer =new byte[1024];
-				    int len=0;
-				    while((len=in.read(buffer))!=-1){
-				            out.write(buffer, 0, len);
-				            out.flush();                
-				        }                              
-				      
-				      outBuff.close();
-				      out.close();
-				      inBuff.close();
-				      in.close();
-				      et.setUrl(url);
-				      
-				    
-		}else{
-			String url ="Ã»ÓĞÎÄ¼ş";
-			et.setUrl(url);
-		}
-			// »ñÈ¡jspÖĞÃûÎª...µÄinput±êÇ©ÖĞÓÃ»§ÊäÈëµÄÊı¾İ
+		       }else{
+		    	   String url ="æ²¡æœ‰æ–‡ä»¶";
+				   et.setUrl(url);
+		       }
+			// è·å–jspä¸­åä¸º...çš„inputæ ‡ç­¾ä¸­ç”¨æˆ·è¾“å…¥çš„æ•°æ®
 		       String question = request.getParameter("question");
 		       String answer=request.getParameter("answer");
 		       String classify = request.getParameter("classify");
-		       
-
-		// ½«´ÓÓÃ»§ÄÄÀï»ñÈ¡À´µÄÊı¾İ´æÈëÊµÌåÀàÖĞ
+		// å°†ä»ç”¨æˆ·å“ªé‡Œè·å–æ¥çš„æ•°æ®å­˜å…¥å®ä½“ç±»ä¸­
 		       et.setQuestion(question);
 		       et.setAnswer(answer);
 		       et.setClassify(classify);
-		       
-		       
-
-		// µ÷ÓÃÒµÎñ²ãµÄ·½·¨½«Êı¾İ´«¸øÒµÎñ²ã
+		// è°ƒç”¨ä¸šåŠ¡å±‚çš„æ–¹æ³•å°†æ•°æ®ä¼ ç»™ä¸šåŠ¡å±‚
 		       os.saveEntity(et);
-		
-		return "redirect:main.do";// ÖØ¶¨Ïòµ½main·½·¨
+		return "redirect:main.do";// é‡å®šå‘åˆ°mainæ–¹æ³•
 	}
 		
 		
 		
 		/*
-		 * ÎÄ¼şÏÂÔØ
+		 * æ–‡ä»¶ä¸‹è½½
 		 */
 		@RequestMapping(value = "/download.do")
 		public ResponseEntity<byte[]> download(HttpServletRequest request, @RequestParam("filename") String filename,
 				Model model) throws Exception {
 			if(!filename.isEmpty()){
-				// ÏÂÔØÎÄ¼şÂ·¾¶
+				// ä¸‹è½½æ–‡ä»¶è·¯å¾„
+				if(filename.equals("æ²¡æœ‰æ–‡ä»¶")){
+					return null;
+				}
 				String path = request.getSession().getServletContext().getRealPath("/images/");
 				File file = new File(path + File.separator + filename);
 				HttpHeaders headers = new HttpHeaders();
-				// ÏÂÔØÏÔÊ¾µÄÎÄ¼şÃû£¬½â¾öÖĞÎÄÃû³ÆÂÒÂëÎÊÌâ
+				// ä¸‹è½½æ˜¾ç¤ºçš„æ–‡ä»¶åï¼Œè§£å†³ä¸­æ–‡åç§°ä¹±ç é—®é¢˜
 				String downloadFielName = new String(filename.getBytes("UTF-8"), "iso-8859-1");
-				// Í¨Öªä¯ÀÀÆ÷ÒÔattachment£¨ÏÂÔØ·½Ê½£©´ò¿ª
+				// é€šçŸ¥æµè§ˆå™¨ä»¥attachmentï¼ˆä¸‹è½½æ–¹å¼ï¼‰æ‰“å¼€
 				headers.setContentDispositionFormData("attachment", downloadFielName);
-				// application/octet-stream £º ¶ş½øÖÆÁ÷Êı¾İ£¨×î³£¼ûµÄÎÄ¼şÏÂÔØ£©¡£
+				// application/octet-stream ï¼š äºŒè¿›åˆ¶æµæ•°æ®ï¼ˆæœ€å¸¸è§çš„æ–‡ä»¶ä¸‹è½½ï¼‰ã€‚
 				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 				return new ResponseEntity<byte[]>(FileUtils.readFileToByteArray(file), headers, HttpStatus.CREATED);
 			}else{
 				return null;
 			}
-        }
+}
+		
+		
 		
 		
 
